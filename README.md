@@ -4,6 +4,8 @@
 Mossed is a Balatro content mod that adds stuff idk it's a bunch of inside jokes and other stuff. It mostly adds a bunch of Jokers and some Decks and some other stuff I think.
 Jokers are unlocked by default, some are discovered by default, can you find them?
 
+All artwork by myself (Lara), all code by Jetziel
+
 ## Installation
 
 This mod requires [Steamodded Alpha 1413a](https://github.com/Steamodded/smods) or newer to run.
