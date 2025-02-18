@@ -224,8 +224,8 @@ return {
 				text = {
 					"Add {C:green}Green{} to",
 					"a random {C:attention}Joker{}",
-					"set that Joker's",
-					"{C:attention}sell value{} to {C:attention}-#1#{}",
+					"change that Joker's",
+					"{C:attention}sell value{} by {C:attention}-#1#{}",
 				},
 			},
 		},
