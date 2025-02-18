@@ -14,8 +14,8 @@ return {
 			b_moss_fitzgerald = {
 				name = "Casino Deck",
 				text = {
-					"Start run with",
-					"{C:tarot,T:c_wheel_of_fortune}Wheel of Fourtune",
+					"Start run with a",
+					"{C:tarot,T:c_wheel_of_fortune}Wheel of Fortune{} card",
 					"{C:blue}Hands{} and {C:red}Discards{} are",
 					"{C:attention}Randomized{} at the start",
 					"of a Round"
@@ -69,7 +69,7 @@ return {
 				},
 			},
 			j_moss_jeb = {
-				name = "jeb",
+				name = "Jeb",
 				text = {
 					"This Joker gains {C:red}+#2#{} mult",
 					"whenever a pack is opened",
@@ -103,7 +103,7 @@ return {
 			j_moss_blueberry = {
 				name = "Blueberry",
 				text = {
-					"{C:blue}+#2#{} Chips per Blueberries",
+					"{C:blue}+#2#{} Chips per Blueberry",
 					"obtained this run",
 					"Destroys itself after {C:attention}#1#{} rounds",
 					"{C:inactive}(Currently {}{C:blue}+#3#{}{C:inactive} Chips){}",
@@ -113,7 +113,7 @@ return {
 			j_moss_strawberry = {
 				name = "Strawberry",
 				text = {
-					"{C:red}+#2#{} Mult per Strawberries",
+					"{C:red}+#2#{} Mult per Strawberry",
 					"obtained this run",
 					"Destroys itself after {C:attention}#1#{} rounds",
 					"{C:inactive}(Currently {}{C:red}+#3#{}{C:inactive} Mult){}",
