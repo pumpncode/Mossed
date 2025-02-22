@@ -80,7 +80,7 @@ SMODS.Edition{
 	weight = 3,
 	extra_cost = 4,
 	sound = { sound = "moss_greensound", per = 1.2, vol = 0.2 },
-	config = { extra = { upgrade = 2, sell_up = 1 } },
+	config = { extra = { upgrade = 5, sell_up = 2 } },
 	loc_vars = function(self, info_queue, card, area)
 		if card.area.config.collection then
 			return {
@@ -136,7 +136,7 @@ SMODS.Joker{
 	loc_vars = function(self, info_queue, card, area, edition)
 			if not card.edition or (card.edition and not card.edition.moss_green) then
 				--info_queue[#info_queue + 1] = G.P_CENTERS.e_moss_green
-				--figure out why this doesn't work later
+				--I'll figure out why this doesn't work later
 			end
 		return { vars = { card.ability.extra.round_limit, card.ability.extra.moss_rounds } }
 	end,
@@ -988,7 +988,17 @@ SMODS.Consumable {
         return { vars = { card.ability.extra.max_highlighted, card.ability.extra.green_chance, (G.GAME.probabilities.normal or 1) } }
     end,
 	can_use = function(self, card)
-		return #G.hand.cards > 0 and #G.hand.highlighted > 0 and #G.hand.highlighted < card.ability.extra.max_highlighted + 1
+		if #G.hand.cards > 0 and #G.hand.highlighted > 0 and #G.hand.highlighted < card.ability.extra.max_highlighted + 1 then	
+			local edition_check = 0
+			for i = 1, #G.hand.highlighted do
+				if G.hand.highlighted[i].edition then
+					edition_check = edition_check + 1
+				end
+			end
+			if edition_check == 0 then
+				return true
+			end
+		end
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, #G.hand.highlighted do
@@ -1031,26 +1041,29 @@ SMODS.Consumable {
 	atlas = "atlasconsumable",
 	pos = { x = 1, y = 1 },
 	display_size = { w = 65, h = 95 },
-	config = { extra = { sell_set = 5 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.sell_set } }
-    end,
+	config = {  },
 	can_use = function(self, card)
-		return true
-	end,
-	use = function(self, card, area, copier)
 		local jokers = {}
 		for i=1, #G.jokers.cards do 
 			if G.jokers.cards[i] ~= card then
 				jokers[#jokers+1] = G.jokers.cards[i]
 			end
 		end
-		card.eligible_editionless_jokers = EMPTY(card.eligible_editionless_jokers)
-		for k, v in pairs(jokers) do
-			if v.ability.set == "Joker" and (not v.edition) then
-				table.insert(card.eligible_editionless_jokers, v)
+		if #jokers > 0 then  
+			if G.STAGE == G.STAGES.RUN then
+				card.eligible_editionless_jokers = {}
+				for k, v in pairs(jokers) do
+					if v.ability.set == "Joker" and (not v.edition) then
+						table.insert(card.eligible_editionless_jokers, v)
+					end
+				end
+			end
+			if next(card.eligible_editionless_jokers) then
+				return true
 			end
 		end
+	end,
+	use = function(self, card, area, copier)
 		local used_tarot = copier or self
 		local temp_pool = card.eligible_editionless_jokers
 		local eligible_card = pseudorandom_element(temp_pool, pseudoseed("avarice"))
@@ -1058,8 +1071,6 @@ SMODS.Consumable {
             eligible_card:set_edition({moss_green = true})
             card:juice_up(0.3, 0.5)
             return true end }))
-		eligible_card.ability.extra_value = eligible_card.ability.extra_value - 7
-		eligible_card:set_cost()
 	end,
 }
 SMODS.Tag {
