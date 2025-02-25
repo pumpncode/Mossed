@@ -905,7 +905,7 @@ SMODS.PokerHand {
 			local queens = 0
 			local rank = 0
 			local pair_rank = 0
-			local same_rank = 0
+			local same_card = 0
 			for i = 1, #hand, 1 do	
 				if #hand > 2 then
 					if hand[i].base.id == 12 and not next(SMODS.find_card("j_moss_glamorous")) then
@@ -913,33 +913,57 @@ SMODS.PokerHand {
 						queens = queens + 1
 					end
 					if hand[i].base.id > 10 and hand[i].base.id < 14 and next(SMODS.find_card("j_moss_glamorous")) and not next(SMODS.find_card("j_pareidolia")) then
-						if rank < hand[i].base.id and pair_rank ~= hand[i].base.id then
-							rank = hand[i].base.id
-							pair_rank = hand[i].base.id
-							table.insert(queencheck, hand[i])
+						if pair_rank == 0 then
+							same_card = hand[i]
+							for j = 1, #hand, 1 do
+								if hand[i].base.id == hand[j].base.id and hand[j] ~= same_card then
+									pair_rank = hand[i].base.id
+								end
+							end
+						end
+						if pair_rank < 13 then
+							if rank < hand[i].base.id and pair_rank ~= hand[i].base.id then
+								rank = hand[i].base.id
+								queencheck = {}
+								table.insert(queencheck, hand[i])
+							end
+						elseif pair_rank > 12 then
+							if hand[i].base.id < 13 and rank < hand[i].base.id and pair_rank ~= hand[i].base.id then
+								rank = hand[i].base.id
+								queencheck = {}
+								table.insert(queencheck, hand[i])
+							end
 						end
 						queens = queens + 1
 					end
 					if hand[i].base.id > 1 and next(SMODS.find_card("j_moss_glamorous")) and next(SMODS.find_card("j_pareidolia")) then
 						if pair_rank == 0 then
-							same_rank = hand[i].base.id
+							same_card = hand[i]
 							for j = 1, #hand, 1 do
-								if hand[i].base.id == hand[j].base.id and hand[i].base.id ~= same_rank then
+								if hand[i].base.id == hand[j].base.id and hand[j] ~= same_card then
 									pair_rank = hand[i].base.id
 								end
 							end
 						end
-						if rank < hand[i].base.id and pair_rank ~= hand[i].base.id then
-							rank = hand[i].base.id
-							queencheck = {}
-							table.insert(queencheck, hand[i])
+						if pair_rank < 13 then
+							if rank < hand[i].base.id and pair_rank ~= hand[i].base.id then
+								rank = hand[i].base.id
+								queencheck = {}
+								table.insert(queencheck, hand[i])
+							end
+						elseif pair_rank > 12 then
+							if hand[i].base.id < 13 and rank < hand[i].base.id and pair_rank ~= hand[i].base.id then
+								rank = hand[i].base.id
+								queencheck = {}
+								table.insert(queencheck, hand[i])
+							end
 						end
 						queens = queens + 1
 					end
 				end
 			end
 			local _check = SMODS.merge_lists(parts._2, {queencheck})
-			if ( queens == 1 and not next(SMODS.find_card("j_moss_glamorous")) ) or ( queens > 0 and next(SMODS.find_card("j_moss_glamorous")) and not next(SMODS.find_card("j_pareidolia")) ) or ( queens > 0 and next(SMODS.find_card("j_pareidolia")) ) then
+			if ( queens == 1 and not next(SMODS.find_card("j_moss_glamorous")) ) or ( queens > 0 and queens ~= 2 and next(SMODS.find_card("j_moss_glamorous")) and not next(SMODS.find_card("j_pareidolia")) ) or ( queens > 0 and next(SMODS.find_card("j_pareidolia")) ) then
 				return {_check}
 			end	
 		end
