@@ -85,8 +85,8 @@ SMODS.Edition{
 		if card.area.config.collection then
 			return {
 				vars = {
-					card.edition.extra.upgrade,
-					card.edition.extra.sell_up,
+					card.edititon and card.edititon.extra and card.edition.extra.upgrade or self.config.extra.upgrade,
+					card.edititon and card.edition.extra and card.edition.extra.sell_up or self.config.extra.sell_up,
 				},
 				key = self.key.."alt2",
 			}
