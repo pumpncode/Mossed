@@ -202,16 +202,20 @@ function SMODS.current_mod.reset_game_globals(run_start)
 	local kitchen_card = pseudorandom_element({"Spades","Hearts","Diamonds","Clubs"}, pseudoseed("kitchen" .. G.GAME.round_resets.ante))
 	G.GAME.current_round.kitchen_card.suit = kitchen_card
 end
+local kitchen_joker_active = false
 local issuitref = Card.is_suit
 function Card.is_suit(self, suit, bypass_debuff, flush_calc)
+    if not kitchen_joker_active then
+        return issuitref(self, suit, bypass_debuff, flush_calc)
+    end
     if flush_calc then
-        if next(SMODS.find_card('j_moss_kitchen')) and SMODS.has_no_suit(self) and ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit == G.GAME.current_round.kitchen_card.suit ) and not ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit ~= G.GAME.current_round.kitchen_card.suit ) then
+        if SMODS.has_no_suit(self) and ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit == G.GAME.current_round.kitchen_card.suit ) and not ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit ~= G.GAME.current_round.kitchen_card.suit ) then
             return true
         end
         return issuitref(self, suit, bypass_debuff, flush_calc)
     else
-        if self.debuff and not bypass_debuff then return end 
-        if next(SMODS.find_card('j_moss_kitchen')) and SMODS.has_no_suit(self) and ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit == G.GAME.current_round.kitchen_card.suit ) and not ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit ~= G.GAME.current_round.kitchen_card.suit ) then
+        if self.debuff and not bypass_debuff then return end
+        if SMODS.has_no_suit(self) and ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit == G.GAME.current_round.kitchen_card.suit ) and not ( G.GAME.current_round.kitchen_card.suit == G.GAME.current_round.kitchen_card.suit ) == ( suit ~= G.GAME.current_round.kitchen_card.suit ) then
             return true
         end
         return issuitref(self, suit, bypass_debuff, flush_calc)
@@ -230,6 +234,12 @@ SMODS.Joker{
 	cost = 8,
 	config = { extra = {  } },
 	enhancement_gate = "m_stone",
+	add_to_deck = function(self, card, from_debuff)
+		kitchen_joker_active = true
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		kitchen_joker_active = false
+	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS.m_stone
 		return {
@@ -1125,3 +1135,7 @@ SMODS.Tag {
 		end
 	end,
 }
+
+if Balatest then
+	assert(SMODS.load_file('tests/jokers.lua'))()
+end
