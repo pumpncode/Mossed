@@ -1,6 +1,6 @@
 Balatest.TestPlay({
 	name = "kitchen_inactive_normal_flush",
-	category = {"kitchen", "inactive"},
+	category = {"jokers"},
 	execute = function()
 		Balatest.play_hand({"2S", "3S", "4S", "5S", "7S"});
 	end,
@@ -11,7 +11,7 @@ Balatest.TestPlay({
 
 Balatest.TestPlay({
 	name = "kitchen_inactive_stone_no_flush",
-	category = {"kitchen", "inactive"},
+	category = {"jokers"},
 	deck = {
 		cards = {
 			{r = "2", s = "S", e = "m_stone"},
@@ -34,7 +34,7 @@ Balatest.TestPlay({
 
 Balatest.TestPlay({
 	name = "kitchen_active_stone_flush_spades",
-	category = {"kitchen", "active"},
+	category = {"jokers"},
 	jokers = {"j_moss_kitchen"},
 	deck = {
 		cards = {
@@ -65,7 +65,7 @@ Balatest.TestPlay({
 
 Balatest.TestPlay({
 	name = "kitchen_active_stone_wrong_suit",
-	category = {"kitchen", "active"},
+	category = {"jokers"},
 	jokers = {"j_moss_kitchen"},
 	deck = {
 		cards = {
@@ -96,7 +96,7 @@ Balatest.TestPlay({
 
 Balatest.TestPlay({
 	name = "kitchen_active_stone_flush_hearts",
-	category = {"kitchen", "active"},
+	category = {"jokers"},
 	jokers = {"j_moss_kitchen"},
 	deck = {
 		cards = {
@@ -127,7 +127,7 @@ Balatest.TestPlay({
 
 Balatest.TestPlay({
 	name = "kitchen_active_normal_flush",
-	category = {"kitchen", "active"},
+	category = {"jokers"},
 	jokers = {"j_moss_kitchen"},
 	execute = function()
 		Balatest.play_hand({"2S", "3S", "4S", "5S", "7S"});
@@ -139,7 +139,7 @@ Balatest.TestPlay({
 
 Balatest.TestPlay({
 	name = "kitchen_suit_changes_each_round",
-	category = {"kitchen", "rotation"},
+	category = {"jokers"},
 	jokers = {"j_moss_kitchen"},
 	execute = function()
 		Balatest.next_round();
